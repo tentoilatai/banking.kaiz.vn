@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Bank } from './models/bank.model';
 import { BankCardComponent } from './components/bank-card/bank-card.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [BankCardComponent]
+  imports: [BankCardComponent, CommonModule, FormsModule]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   currentYear: number;
-
-  constructor() {
-    this.currentYear = new Date().getFullYear();  // Lấy năm hiện tại
-  }
+  isLoading: boolean = true;
+  selectedBank: Bank | null = null;
 
   banks: Bank[] = [
     {
@@ -28,4 +27,21 @@ export class AppComponent {
       accountName: 'TRAN VIET TAI'
     }
   ];
+
+  constructor() {
+    this.currentYear = new Date().getFullYear();
+  }
+
+  ngOnInit() {
+    // Giả lập loading 2 giây
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
+
+  selectBank(bank: Bank) {
+    console.log('Selecting bank:', bank);
+    this.selectedBank = bank;
+    console.log('Selected bank updated:', this.selectedBank);
+  }
 }

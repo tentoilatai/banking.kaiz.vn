@@ -3,24 +3,12 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-100;
+  @apply bg-transparent;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-gray-100;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
+  display: none; /* Ẩn hoàn toàn thanh cuộn */
 }
 
 /* Input number remove arrows */
@@ -32,4 +20,64 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* Toast animation */
+@keyframes toast {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.animate-toast {
+  animation: toast 3s ease-in-out;
+}
+
+/* Pulse animation for loading */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Hover effect for bank buttons */
+.bank-button:hover {
+  filter: brightness(1.1);
+}
+
+/* Animation for QR code appearance */
+@keyframes qr-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-qr-appear {
+  animation: qr-appear 0.5s ease-out forwards;
+}
+
+/* Bounce animation for arrow */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(10px);
+  }
+  60% {
+    transform: translateY(5px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
 }
