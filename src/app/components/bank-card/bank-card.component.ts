@@ -5,9 +5,10 @@ import { Bank } from '../../models/bank.model';
 
 @Component({
   selector: 'app-bank-card',
-  templateUrl: './bank-card.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  templateUrl: './bank-card.component.html',
+  styleUrls: ['./bank-card.component.css']
 })
 export class BankCardComponent implements OnInit {
   @Input() bank!: Bank;

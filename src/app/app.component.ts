@@ -1,31 +1,64 @@
-import { Component } from '@angular/core';
-import { Bank } from './models/bank.model';
-import { BankCardComponent } from './components/bank-card/bank-card.component';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [BankCardComponent]
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  currentYear: number;
+export class AppComponent implements OnInit, OnDestroy {
+  currentYear = new Date().getFullYear();
+  mobileMenuOpen = false;
+  private particleInterval?: number;
 
-  constructor() {
-    this.currentYear = new Date().getFullYear();  // Lấy năm hiện tại
+  ngOnInit() {
+    this.initParticles();
   }
 
-  banks: Bank[] = [
-    {
-      name: 'HSBC Viet Nam Bank',
-      accountNumber: '2043 4053 3001',
-      accountName: 'TRAN VIET TAI'
-    },
-    {
-      name: 'Standard Chartered Bank',
-      accountNumber: '8844 7347 488',
-      accountName: 'TRAN VIET TAI'
+  ngOnDestroy() {
+    if (this.particleInterval) {
+      clearInterval(this.particleInterval);
     }
-  ];
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
+  }
+
+  private initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+
+    const createParticle = () => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+      particlesContainer.appendChild(particle);
+      
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 12000);
+    };
+
+    // Create initial particles
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => createParticle(), i * 200);
+    }
+
+    // Continue creating particles
+    this.particleInterval = window.setInterval(() => {
+      createParticle();
+    }, 2000);
+  }
 }
