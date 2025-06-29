@@ -15,8 +15,8 @@
             <span class="font-bold text-xl gradient-text">Tai Tran Viet</span>
           </div>
           
-          <!-- Navigation Links -->
-          <div class="hidden md:flex items-center space-x-6">
+          <!-- Navigation Links - Hidden -->
+          <div class="hidden md:flex items-center space-x-6" style="display: none;">
             <a routerLink="/" 
                routerLinkActive="text-blue-600" 
                [routerLinkActiveOptions]="{exact: true}"
@@ -35,8 +35,8 @@
             </a>
           </div>
           
-          <!-- Mobile Menu Button -->
-          <button class="md:hidden btn-secondary p-2" (click)="toggleMobileMenu()">
+          <!-- Mobile Menu Button - Hidden -->
+          <button class="md:hidden btn-secondary p-2" (click)="toggleMobileMenu()" style="display: none;">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                     [attr.d]="mobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'">
@@ -45,8 +45,8 @@
           </button>
         </div>
         
-        <!-- Mobile Menu -->
-        <div class="md:hidden mt-4 space-y-2" [class.hidden]="!mobileMenuOpen">
+        <!-- Mobile Menu - Hidden -->
+        <div class="md:hidden mt-4 space-y-2" [class.hidden]="!mobileMenuOpen" style="display: none;">
           <a routerLink="/" 
              routerLinkActive="text-blue-600" 
              [routerLinkActiveOptions]="{exact: true}"

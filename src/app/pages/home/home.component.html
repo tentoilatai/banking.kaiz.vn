@@ -18,25 +18,14 @@
           </p>
         </div>
         
-        <!-- Three Buttons in a Row -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button routerLink="/payment" 
-                  class="btn-primary px-8 py-4 text-lg font-semibold rounded-2xl">
-            View Payment Options
-          </button>
-          
-          <!-- Add Contact Button - Purple in the middle -->
+        <!-- Only Add Contact Button -->
+        <div class="flex justify-center">
           <button (click)="addToContacts()" 
                   class="px-8 py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
             Add Contact
-          </button>
-          
-          <button routerLink="/cv" 
-                  class="btn-primary px-8 py-4 text-lg font-semibold rounded-2xl">
-            View My CV
           </button>
         </div>
       </div>
