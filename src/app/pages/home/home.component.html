@@ -17,7 +17,7 @@
         </p>
       </div>
       
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
         <button routerLink="/payment" 
                 class="btn-primary px-8 py-4 text-lg font-semibold rounded-2xl">
           View Payment Options
@@ -27,38 +27,16 @@
           View My CV
         </button>
       </div>
-    </div>
-    
-    <!-- Features Grid -->
-    <div class="grid md:grid-cols-3 gap-8 mb-16">
-      <div class="card text-center hover:scale-105 smooth-transition">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+
+      <!-- Add Contact Button -->
+      <div class="mb-8">
+        <button (click)="addToContacts()" 
+                class="btn-primary px-8 py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg hover:shadow-xl transition-all duration-300">
+          <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-2">Easy Payments</h3>
-        <p class="text-gray-600">Quick and secure QR code payments for multiple banks</p>
-      </div>
-      
-      <div class="card text-center hover:scale-105 smooth-transition">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-2">Professional Profile</h3>
-        <p class="text-gray-600">Comprehensive CV showcasing skills and experience</p>
-      </div>
-      
-      <div class="card text-center hover:scale-105 smooth-transition">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-green-500 to-teal-500 flex items-center justify-center">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold mb-2">Get in Touch</h3>
-        <p class="text-gray-600">Multiple ways to connect and collaborate</p>
+          Add Contact
+        </button>
       </div>
     </div>
     
@@ -66,7 +44,7 @@
     <div class="glass rounded-3xl p-8 max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold gradient-text mb-8">Contact Information</h2>
       <div class="grid md:grid-cols-3 gap-6">
-        <a href="mailto:iam@kaiz.vn" 
+        <a href="mailto:iam&#64;kaiz.vn" 
            class="flex items-center space-x-4 p-4 rounded-2xl hover:bg-white/10 smooth-transition">
           <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
