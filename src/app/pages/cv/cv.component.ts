@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import html2pdf from 'html2pdf.js';
 
 interface Skill {
   name: string;
@@ -38,6 +39,8 @@ interface Project {
   styleUrls: ['./cv.component.css']
 })
 export class CvComponent implements OnInit {
+  isGeneratingPDF = false;
+
   skills: Skill[] = [
     { name: 'JavaScript/TypeScript', level: 95 },
     { name: 'Angular', level: 90 },
@@ -128,13 +131,98 @@ export class CvComponent implements OnInit {
     });
   }
 
-  downloadCV() {
-    // In a real application, you would generate and download a PDF
-    // For now, we'll just show an alert
-    alert('CV download functionality would be implemented here. This would generate a PDF version of the CV.');
+  async downloadCV() {
+    this.isGeneratingPDF = true;
     
-    // Example implementation:
-    // const element = document.getElementById('cv-content');
-    // html2pdf().from(element).save('Tai_Tran_Viet_CV.pdf');
+    try {
+      const element = document.getElementById('cv-content');
+      if (!element) {
+        throw new Error('CV content not found');
+      }
+
+      // PDF options
+      const options = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: 'Tai_Tran_Viet_CV.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#f5f7fa',
+          scrollX: 0,
+          scrollY: 0,
+          width: element.scrollWidth,
+          height: element.scrollHeight
+        },
+        jsPDF: { 
+          unit: 'in', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'],
+          before: '.page-break-before',
+          after: '.page-break-after',
+          avoid: '.page-break-avoid'
+        }
+      };
+
+      // Show success message before starting
+      this.showMessage('Generating PDF...', 'info');
+
+      // Generate PDF
+      await html2pdf().set(options).from(element).save();
+      
+      // Show success message
+      this.showMessage('CV downloaded successfully!', 'success');
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      this.showMessage('Error generating PDF. Please try again.', 'error');
+    } finally {
+      this.isGeneratingPDF = false;
+    }
+  }
+
+  private showMessage(message: string, type: 'success' | 'error' | 'info') {
+    const notification = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : 
+                   type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+    
+    notification.className = `fixed top-24 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+    
+    const icon = type === 'success' ? 
+      '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>' :
+      type === 'error' ?
+      '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>' :
+      '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+    
+    notification.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${icon}
+        </svg>
+        <span>${message}</span>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+      notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Animate out and remove
+    setTimeout(() => {
+      notification.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
   }
 }

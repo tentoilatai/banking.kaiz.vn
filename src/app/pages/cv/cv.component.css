@@ -65,4 +65,38 @@
   .btn-primary {
     display: none !important;
   }
+  
+  .print\:hidden {
+    display: none !important;
+  }
+}
+
+/* PDF Generation optimizations */
+.page-break-before {
+  page-break-before: always;
+}
+
+.page-break-after {
+  page-break-after: always;
+}
+
+.page-break-avoid {
+  page-break-inside: avoid;
+}
+
+/* Ensure proper rendering for PDF */
+#cv-content {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Loading animation for PDF generation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
