@@ -1,19 +1,21 @@
 <div class="min-h-screen py-8 px-4 pt-24">
   <div class="max-w-7xl mx-auto">
     <!-- Header -->
-    <div class="text-center mb-12">
+    <div class="text-center mb-12 animate-slide-up">
       <h1 class="text-5xl md:text-6xl font-bold gradient-text mb-4">Payment Center</h1>
       <p class="text-xl text-gray-600">Quick and secure QR code payments</p>
     </div>
     
     <!-- Bank Cards Grid -->
     <div class="grid lg:grid-cols-2 gap-8 mb-12">
-      <div *ngFor="let bank of banks" class="bank-card glass rounded-3xl overflow-hidden hover:scale-105 smooth-transition">
+      <div *ngFor="let bank of banks; let i = index" 
+           class="bank-card glass rounded-3xl overflow-hidden hover:scale-105 smooth-transition animate-slide-up"
+           [class]="'stagger-' + (i + 1)">
         <!-- Bank Header -->
         <div class="p-8 bg-gradient-to-r" 
              [ngClass]="{
                'from-red-500 to-red-700': bank.name === 'HSBC Viet Nam Bank',
-               'from-blue-500 to-blue-700': bank.name === 'Standard Chartered Bank'
+               'from-red-600 to-red-800': bank.name === 'Standard Chartered Bank'
              }">
           <div class="flex items-center gap-6">
             <!-- Bank Logo -->
@@ -61,7 +63,7 @@
           
           <button
             (click)="generateQRCode(bank)"
-            class="w-full btn-primary py-4 text-lg font-semibold rounded-2xl"
+            class="w-full btn-primary py-4 text-lg font-semibold rounded-2xl ripple"
             [class.loading]="bank.loading"
           >
             {{ bank.loading ? 'Generating...' : 'Generate QR Code' }}
@@ -73,10 +75,10 @@
             </div>
             <p class="text-center text-gray-600 font-medium">Scan QR code to make payment</p>
             <div class="flex space-x-4">
-              <button (click)="downloadQR(bank)" class="btn-secondary px-6 py-2 rounded-xl">
+              <button (click)="downloadQR(bank)" class="btn-secondary px-6 py-2 rounded-xl ripple">
                 Download QR
               </button>
-              <button (click)="shareQR(bank)" class="btn-secondary px-6 py-2 rounded-xl">
+              <button (click)="shareQR(bank)" class="btn-secondary px-6 py-2 rounded-xl ripple">
                 Share QR
               </button>
             </div>
@@ -86,27 +88,27 @@
     </div>
     
     <!-- Payment Instructions -->
-    <div class="glass rounded-3xl p-8 max-w-4xl mx-auto">
+    <div class="glass rounded-3xl p-8 max-w-4xl mx-auto animate-slide-up stagger-3">
       <h3 class="text-2xl font-bold gradient-text mb-6 text-center">How to Pay</h3>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+        <div class="text-center animate-slide-up stagger-4">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
             <span class="text-white font-bold text-xl">1</span>
           </div>
           <h4 class="font-semibold mb-2">Enter Amount</h4>
           <p class="text-gray-600 text-sm">Input the amount you want to transfer</p>
         </div>
         
-        <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+        <div class="text-center animate-slide-up stagger-5">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 flex items-center justify-center">
             <span class="text-white font-bold text-xl">2</span>
           </div>
           <h4 class="font-semibold mb-2">Generate QR</h4>
           <p class="text-gray-600 text-sm">Click to generate your payment QR code</p>
         </div>
         
-        <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-green-500 to-teal-500 flex items-center justify-center">
+        <div class="text-center animate-slide-up stagger-6">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-red-700 to-red-800 flex items-center justify-center">
             <span class="text-white font-bold text-xl">3</span>
           </div>
           <h4 class="font-semibold mb-2">Scan & Pay</h4>

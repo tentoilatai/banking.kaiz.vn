@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -12,9 +12,13 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 export class AppComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
+  currentPage = 0;
+  isTransitioning = false;
   private particleInterval?: number;
+  private loadingTimeout?: number;
 
   ngOnInit() {
+    this.showLoadingScreen();
     this.initParticles();
   }
 
@@ -22,6 +26,135 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.particleInterval) {
       clearInterval(this.particleInterval);
     }
+    if (this.loadingTimeout) {
+      clearTimeout(this.loadingTimeout);
+    }
+  }
+
+  private showLoadingScreen() {
+    // Show loading screen for 2.5 seconds
+    this.loadingTimeout = window.setTimeout(() => {
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (loadingScreen) {
+        loadingScreen.classList.add('hidden');
+      }
+    }, 2500);
+  }
+
+  @HostListener('window:wheel', ['$event'])
+  onWheel(event: WheelEvent) {
+    if (this.isTransitioning) return;
+    
+    event.preventDefault();
+    
+    if (event.deltaY > 0) {
+      // Scroll down
+      this.goToPage(1);
+    } else {
+      // Scroll up
+      this.goToPage(0);
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (this.isTransitioning) return;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'PageDown':
+      case ' ': // Space
+        event.preventDefault();
+        this.goToPage(1);
+        break;
+      case 'ArrowUp':
+      case 'PageUp':
+        event.preventDefault();
+        this.goToPage(0);
+        break;
+      case 'Home':
+        event.preventDefault();
+        this.goToPage(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        this.goToPage(1);
+        break;
+    }
+  }
+
+  goToPage(pageIndex: number) {
+    if (pageIndex === this.currentPage || this.isTransitioning) return;
+    
+    this.isTransitioning = true;
+    
+    // Add transition effect
+    const currentPageElement = document.getElementById(`page${this.currentPage + 1}`);
+    const targetPageElement = document.getElementById(`page${pageIndex + 1}`);
+    
+    if (currentPageElement && targetPageElement) {
+      // Remove active class from current page
+      currentPageElement.classList.remove('active');
+      
+      // Add transition classes
+      if (pageIndex > this.currentPage) {
+        currentPageElement.classList.add('prev');
+      }
+      
+      // Set new current page
+      this.currentPage = pageIndex;
+      
+      // Activate new page after a short delay
+      setTimeout(() => {
+        targetPageElement.classList.add('active');
+        
+        // Clean up classes
+        setTimeout(() => {
+          currentPageElement.classList.remove('prev');
+          this.isTransitioning = false;
+        }, 800);
+      }, 50);
+    } else {
+      this.currentPage = pageIndex;
+      this.isTransitioning = false;
+    }
+    
+    // Add page change effect
+    this.addPageChangeEffect();
+  }
+
+  private addPageChangeEffect() {
+    // Create ripple effect
+    const ripple = document.createElement('div');
+    ripple.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(234, 67, 53, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.6s ease-out;
+    `;
+    
+    document.body.appendChild(ripple);
+    
+    // Animate ripple
+    setTimeout(() => {
+      ripple.style.width = '200vw';
+      ripple.style.height = '200vw';
+      ripple.style.opacity = '0';
+    }, 10);
+    
+    // Remove ripple
+    setTimeout(() => {
+      if (ripple.parentNode) {
+        ripple.parentNode.removeChild(ripple);
+      }
+    }, 600);
   }
 
   toggleMobileMenu() {
@@ -39,26 +172,38 @@ export class AppComponent implements OnInit, OnDestroy {
     const createParticle = () => {
       const particle = document.createElement('div');
       particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 8 + 's';
-      particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+      
+      // Random properties
+      const size = Math.random() * 4 + 2;
+      const opacity = Math.random() * 0.5 + 0.1;
+      const duration = Math.random() * 4 + 6;
+      
+      particle.style.cssText = `
+        left: ${Math.random() * 100}%;
+        width: ${size}px;
+        height: ${size}px;
+        opacity: ${opacity};
+        animation-delay: ${Math.random() * 8}s;
+        animation-duration: ${duration}s;
+      `;
+      
       particlesContainer.appendChild(particle);
       
       setTimeout(() => {
         if (particle.parentNode) {
           particle.parentNode.removeChild(particle);
         }
-      }, 12000);
+      }, duration * 1000);
     };
 
     // Create initial particles
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => createParticle(), i * 200);
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => createParticle(), i * 100);
     }
 
     // Continue creating particles
     this.particleInterval = window.setInterval(() => {
       createParticle();
-    }, 2000);
+    }, 1500);
   }
 }
