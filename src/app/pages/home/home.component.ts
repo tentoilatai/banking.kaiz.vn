@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -102,7 +101,7 @@ END:VCARD`;
   private showSuccessMessage() {
     // Create success notification
     const notification = document.createElement('div');
-    notification.className = 'fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+    notification.className = 'fixed top-24 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
     notification.innerHTML = `
       <div class="flex items-center space-x-2">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +120,7 @@ END:VCARD`;
     
     // Animate out and remove
     setTimeout(() => {
-      notification.style.transform = 'translateX(full)';
+      notification.style.transform = 'translateX(100%)';
       setTimeout(() => {
         if (notification.parentNode) {
           notification.parentNode.removeChild(notification);

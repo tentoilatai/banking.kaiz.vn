@@ -14,12 +14,17 @@ export class AppComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   currentPage = 0;
   isTransitioning = false;
+  isMobile = false;
   private particleInterval?: number;
   private loadingTimeout?: number;
 
   ngOnInit() {
+    this.checkMobile();
     this.showLoadingScreen();
     this.initParticles();
+    
+    // Listen for window resize
+    window.addEventListener('resize', () => this.checkMobile());
   }
 
   ngOnDestroy() {
@@ -29,6 +34,11 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.loadingTimeout) {
       clearTimeout(this.loadingTimeout);
     }
+    window.removeEventListener('resize', () => this.checkMobile());
+  }
+
+  private checkMobile() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   private showLoadingScreen() {
@@ -43,7 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('window:wheel', ['$event'])
   onWheel(event: WheelEvent) {
-    if (this.isTransitioning) return;
+    // Only handle wheel events on desktop
+    if (this.isMobile || this.isTransitioning) return;
     
     event.preventDefault();
     
@@ -58,7 +69,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    if (this.isTransitioning) return;
+    // Only handle keyboard events on desktop
+    if (this.isMobile || this.isTransitioning) return;
 
     switch (event.key) {
       case 'ArrowDown':
@@ -80,6 +92,39 @@ export class AppComponent implements OnInit, OnDestroy {
         event.preventDefault();
         this.goToPage(1);
         break;
+    }
+  }
+
+  // Touch events for mobile
+  private touchStartY = 0;
+  private touchEndY = 0;
+
+  @HostListener('window:touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    if (!this.isMobile) return;
+    this.touchStartY = event.changedTouches[0].screenY;
+  }
+
+  @HostListener('window:touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    if (!this.isMobile || this.isTransitioning) return;
+    
+    this.touchEndY = event.changedTouches[0].screenY;
+    this.handleSwipe();
+  }
+
+  private handleSwipe() {
+    const swipeThreshold = 50;
+    const swipeDistance = this.touchStartY - this.touchEndY;
+
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+      if (swipeDistance > 0) {
+        // Swipe up - go to next page
+        this.goToPage(1);
+      } else {
+        // Swipe down - go to previous page
+        this.goToPage(0);
+      }
     }
   }
 
@@ -119,8 +164,10 @@ export class AppComponent implements OnInit, OnDestroy {
       this.isTransitioning = false;
     }
     
-    // Add page change effect
-    this.addPageChangeEffect();
+    // Add page change effect (only on desktop)
+    if (!this.isMobile) {
+      this.addPageChangeEffect();
+    }
   }
 
   private addPageChangeEffect() {

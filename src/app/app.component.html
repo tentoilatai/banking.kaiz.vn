@@ -1,25 +1,39 @@
 <div class="page-container" id="pageContainer">
-  <!-- Loading Screen -->
+  <!-- Loading Screen with Three Dots -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-logo">
       <span class="text-red-500 font-bold text-2xl">T</span>
     </div>
     <div class="loading-text">Tai Tran Viet</div>
-    <div class="loading-spinner"></div>
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
   </div>
 
   <!-- Particle Background -->
   <div class="particles" id="particles"></div>
   
-  <!-- Page Indicator -->
-  <div class="page-indicator">
+  <!-- Page Indicator - Hidden on mobile -->
+  <div class="page-indicator hidden md:flex">
     <div class="page-dot" [class.active]="currentPage === 0" (click)="goToPage(0)"></div>
     <div class="page-dot" [class.active]="currentPage === 1" (click)="goToPage(1)"></div>
   </div>
   
-  <!-- Navigation Instructions -->
-  <div class="nav-instructions">
+  <!-- Navigation Instructions - Hidden on mobile, positioned above footer -->
+  <div class="nav-instructions hidden md:block">
     <span>↑↓ Navigate • Mouse Wheel • Arrow Keys</span>
+  </div>
+  
+  <!-- Mobile Touch Area for swipe hints -->
+  <div class="mobile-touch-area md:hidden">
+    <div class="mobile-swipe-hint" *ngIf="currentPage === 0">
+      Swipe up or tap to see contact info
+    </div>
+    <div class="mobile-swipe-hint" *ngIf="currentPage === 1">
+      Swipe down to go back
+    </div>
   </div>
   
   <!-- Navigation -->
@@ -98,7 +112,7 @@
   
   <!-- Page 2: Contact -->
   <div class="page-section" [class.active]="currentPage === 1" id="page2">
-    <div class="h-screen flex items-center justify-center px-4">
+    <div class="h-screen flex items-center justify-center px-4 pb-20 md:pb-0">
       <div class="max-w-4xl mx-auto w-full">
         <!-- Contact Info -->
         <div class="glass rounded-3xl p-8 animate-slide-up">
@@ -171,10 +185,10 @@
   </div>
   
   <!-- Footer -->
-  <footer class="fixed bottom-0 left-0 right-0 z-10 p-4">
+  <footer class="fixed bottom-0 left-0 right-0 z-50 p-4">
     <div class="max-w-7xl mx-auto">
       <div class="glass rounded-2xl p-4 text-center">
-        <p class="text-gray-600">&copy; {{ currentYear }} Tai Tran Viet. All rights reserved.</p>
+        <p class="text-gray-600 text-sm">&copy; {{ currentYear }} Tai Tran Viet. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -57,7 +57,7 @@ html {
   display: none;
 }
 
-/* Loading Screen */
+/* Loading Screen with Three Dots */
 .loading-screen {
   position: fixed;
   top: 0;
@@ -98,13 +98,34 @@ html {
   animation: fadeInOut 2s ease-in-out infinite;
 }
 
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid white;
+/* Three Dots Loading Animation */
+.loading-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.loading-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  background: white;
+  animation: dotPulse 1.4s ease-in-out infinite both;
+}
+
+.loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.loading-dot:nth-child(2) { animation-delay: -0.16s; }
+.loading-dot:nth-child(3) { animation-delay: 0s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
@@ -117,12 +138,7 @@ html {
   50% { opacity: 1; }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Page Navigation Indicator */
+/* Page Navigation Indicator - Hidden on mobile */
 .page-indicator {
   position: fixed;
   right: 2rem;
@@ -132,6 +148,12 @@ html {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-indicator {
+    display: none;
+  }
 }
 
 .page-dot {
@@ -154,10 +176,10 @@ html {
   transform: scale(1.2);
 }
 
-/* Navigation Instructions */
+/* Navigation Instructions - Hidden on mobile and positioned above footer */
 .nav-instructions {
   position: fixed;
-  bottom: 2rem;
+  bottom: 6rem; /* Positioned above footer */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -169,6 +191,13 @@ html {
   color: var(--text-primary);
   font-size: 0.9rem;
   animation: bounce 2s ease-in-out infinite;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .nav-instructions {
+    display: none; /* Hidden on mobile */
+  }
 }
 
 @keyframes bounce {
@@ -408,6 +437,7 @@ html {
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -422,14 +452,14 @@ html {
     font-size: 14px;
   }
   
-  .page-indicator {
-    right: 1rem;
+  /* Mobile-specific adjustments */
+  .page-section {
+    padding-bottom: 2rem; /* Add padding for mobile */
   }
   
-  .nav-instructions {
-    bottom: 1rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.8rem;
+  /* Ensure footer is visible on mobile */
+  .mobile-footer-space {
+    height: 80px; /* Space for footer on mobile */
   }
 }
 
@@ -561,4 +591,36 @@ html {
 .ripple:active::before {
   width: 300px;
   height: 300px;
+}
+
+/* Footer positioning */
+footer {
+  z-index: 100 !important;
+}
+
+/* Touch-friendly mobile navigation */
+@media (max-width: 768px) {
+  .mobile-touch-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: transparent;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-swipe-hint {
+    color: rgba(234, 67, 53, 0.6);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
 }
